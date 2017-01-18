@@ -14,7 +14,6 @@ END$$
 
 DELIMITER ;
 
-DROP PROCEDURE  pr_to_update_remianing
 
 
 DELIMITER $$
@@ -82,5 +81,4 @@ END$$
 
 DELIMITER ;
 
-DROP PROCEDURE pr_to_update_remiaining
 

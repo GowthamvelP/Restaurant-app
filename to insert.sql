@@ -36,10 +36,8 @@ CREATE
          END LOOP;       
     END$$
 DELIMITER ;
-DROP PROCEDURE pr_multi_menu
-CALL pr_multi_menu(109,'idly','09:00','10')
+CALL pr_multi_menu(109,'vada','09:00','10')
 
 
 
 SELECT * FROM order_transaction
-TRUNCATE TABLE order_transaction

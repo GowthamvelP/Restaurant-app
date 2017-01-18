@@ -46,7 +46,6 @@ END IF;
 END $$
 DELIMITER ;
 
-DROP PROCEDURE pr_cancel_order
 CALL pr_cancel_order('109','idly',7) 
 
 
