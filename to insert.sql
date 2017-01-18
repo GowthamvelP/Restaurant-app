@@ -28,7 +28,7 @@ CREATE
                  SET length_onequantity = LENGTH(onequantity);
                  SET trimmedquantity = TRIM(onequantity);
                  
-                 CALL pr_orderplease(order_id_par,seatno,oneorder,order_time,onequantity);
+                 CALL pr_order(order_id_par,seatno,oneorder,order_time,onequantity);
                  
                    SET orderlist = INSERT(orderlist,1,length_oneorder + 1,'');
                    SET quantitylist = INSERT(quantitylist,1,length_onequantity + 1,'');
@@ -37,7 +37,7 @@ CREATE
     END$$
 DELIMITER ;
 DROP PROCEDURE pr_multimenu
-CALL pr_multimenu(106,'idly,vada,poori,pongal,coffee,tea','09:00','10,10,10,10,10,10')
+CALL pr_multimenu(109,'idly','09:00','10')
 
 
 

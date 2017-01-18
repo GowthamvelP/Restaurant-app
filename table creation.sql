@@ -20,13 +20,13 @@ CREATE TABLE items_list(
 
 
 
+CREATE TABLE
 
 CREATE TABLE maximum_quantity (
-  sno INT  PRIMARY KEY NOT NULL ,
+  sno INT PRIMARY KEY NOT NULL,
+  day_name VARCHAR(20) DEFAULT NULL,
   max_quantity INT NOT NULL
- 
-) 
-
+)
 
 
 CREATE TABLE remaining_details (
@@ -43,7 +43,7 @@ CREATE TABLE remaining_details (
 
 
 CREATE TABLE seat_details (
-  seat_id INT PRIMARY KEY NOT NULL,
+  seat_id INT PRIMARY KEY NOT NULL UNIQUE,
   seat_no INT NOT NULL,
   seat_status VARCHAR(20) NOT NULL
   
@@ -53,14 +53,14 @@ CREATE TABLE seat_details (
 
 
 CREATE TABLE order_transaction (
-  Trans_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  Order_Id INT NOT NULL,
-  Item_Id INT NOT NULL,
-  Seat_No INT NOT NULL,
-  Food_ordered VARCHAR(20) NOT NULL,
-  Quantity INT NOT NULL,
-  Order_Time TIME NOT NULL,
-  Order_Status VARCHAR(20) NOT NULL
+  trans_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  order_Id INT NOT NULL,
+  item_Id INT NOT NULL UNIQUE,
+  seat_No INT NOT NULL UNIQUE,
+  food_ordered VARCHAR(20) NOT NULL,
+  quantity INT NOT NULL,
+  order_Time TIME NOT NULL,
+  order_Status VARCHAR(20) NOT NULL
 
 )
 
