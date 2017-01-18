@@ -60,9 +60,9 @@ CREATE TABLE order_transaction (
   food_ordered VARCHAR(20) NOT NULL,
   quantity INT NOT NULL,
   order_Time TIME NOT NULL,
-  order_Status VARCHAR(20) NOT NULL
+  order_Status VARCHAR(20) NOT NULL 
 
-);
+);;
 
 INSERT INTO sessions VALUES(1,breakfast,'08:00:00','11:00:00',100),(2,lunch,'11:15:00','15:00:00',75),(3,refreshment,'15:00:00','23:00:00',200),(4,dinner,'19:00:00','23:00:00',100);
 INSERT INTO items_list VALUES(1,1,'idly'),(2,1,'vada'),(3,1,'dosa'),(4,1,'poori'),(5,1,'pongal'),(6,1,'coffee'),(7,1,'tea'),(8,2,'southindianmeals'),(9,2,'northindianmeals'),(10,2,'varietyrice'),(11,3,'coffee'),(12,3,'tea'),(13,3,'snacks'),(14,4,'friedrice'),(15,4,'chappathi'),(16,4,'chatitems');
