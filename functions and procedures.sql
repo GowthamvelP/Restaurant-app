@@ -14,15 +14,15 @@ END$$
 
 DELIMITER ;
 
-DROP FUNCTION  fn_check_seatno_for_cancel
+DROP PROCEDURE  pr_to_update_remianing
 
 
 DELIMITER $$
 
-CREATE  FUNCTION fn_check_itemslimit(orderidpar INT) RETURNS INT(11)
+CREATE  FUNCTION fn_check_items_limit(order_id_par INT) RETURNS INT(11)
 BEGIN
 DECLARE flag INT;
-IF (SELECT COUNT(DISTINCT(Food_ordered)) FROM order_transaction WHERE order_id=orderidpar) <= (SELECT max_quantity FROM maximum_quantity WHERE day_name='week_day')THEN
+IF (SELECT COUNT(DISTINCT(Food_ordered)) FROM order_transaction WHERE order_id=order_id_par) <= (SELECT max_quantity FROM maximum_quantity WHERE day_name='week_day')THEN
 SET flag=1;
 ELSE
 SET flag=0;
@@ -36,10 +36,10 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE  FUNCTION fn_check_seatno_for_cancel(seatnopar VARCHAR(20)) RETURNS INT(11)
+CREATE  FUNCTION fn_check_seatno_for_cancel(seat_no_par VARCHAR(20)) RETURNS INT(11)
 BEGIN
 DECLARE flag INT;
-IF EXISTS(SELECT seat_no FROM order_transaction WHERE seat_no=seatnopar)
+IF EXISTS(SELECT seat_no FROM order_transaction WHERE seat_no=seat_no_par)
 THEN
 SET flag=1;
 ELSE
@@ -55,13 +55,13 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE  PROCEDURE pr_to_update_remiaining(itemidpar VARCHAR(20),quantity INT)
+CREATE  PROCEDURE pr_to_update_remiaining(item_id_par VARCHAR(20),quantity INT)
 BEGIN
-DECLARE remainingitems INT;
-SELECT remaining INTO RemainingItems FROM remaining_details WHERE Item_Id=itemidpar;
+DECLARE remaining_items INT;
+SELECT remaining INTO Remaining_items FROM remaining_details WHERE Item_Id=item_id_par;
 UPDATE remaining_details
-			SET remaining=RemainingItems-Quantity
-			WHERE Item_Id=itemidpar;
+			SET remaining=Remaining_items-Quantity
+			WHERE Item_Id=item_id_par;
 END$$
 
 DELIMITER ;
@@ -71,16 +71,16 @@ DELIMITER ;
 
 DELIMITER $$
 
-CREATE  PROCEDURE pr_to_update_remaining(itemidpar VARCHAR(20),cancelquantity INT)
+CREATE  PROCEDURE pr_to_update_remaining(item_id_par VARCHAR(20),cancel_quantity INT)
 BEGIN
-DECLARE remainingitems INT;
-SELECT remaining INTO RemainingItems FROM remaining_details WHERE Item_Id=itemidpar;
+DECLARE remaining_items INT;
+SELECT remaining INTO remaining_items FROM remaining_details WHERE Item_Id=item_id_par;
 UPDATE remaining_details
-SET remaining=remaining+cancelquantity
-WHERE item_id=itemIdpar;
+SET remaining=remaining+cancel_quantity
+WHERE item_id=item_Id_par;
 END$$
 
 DELIMITER ;
 
-DROP PROCEDURE pr_to_update_remaining
+DROP PROCEDURE pr_to_update_remiaining
 

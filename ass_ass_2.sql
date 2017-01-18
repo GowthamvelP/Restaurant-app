@@ -1,31 +1,31 @@
 
 
 DELIMITER $$
-CREATE PROCEDURE pr_order(orderidpar INT,seatnopar INT,food VARCHAR(20),ordertime TIME,Quantity INT)
+CREATE PROCEDURE pr_order(order_id_par INT,seat_no_par INT,food VARCHAR(20),order_time TIME,Quantity INT)
 BEGIN 
  
 
-DECLARE remainingitems INT; 
-DECLARE sessionidpar INT;s
-DECLARE seatid INT;
-DECLARE itemidpar INT;
-SET sessionidpar=(SELECT session_id FROM sessions WHERE ordertime BETWEEN from_time AND to_time);
-SET itemidpar=(SELECT item_id FROM items_list WHERE items=food AND ession_id=sessionidpar);
-    IF sessionidpar=(SELECT session_id FROM items_list WHERE item_id=itemidpar)
+DECLARE remaining_items INT; 
+DECLARE session_id_par INT;
+DECLARE seat_id INT;
+DECLARE item_id_par INT;
+SET session_id_par=(SELECT session_id FROM sessions WHERE order_time BETWEEN from_time AND to_time);
+SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=session_id_par);
+    IF session_id_par=(SELECT session_id FROM items_list WHERE item_id=item_id_par)
     THEN
-        IF fn_check_itemslimit(orderidpar)=1
+        IF fn_check_items_limit(order_id_par)=1
         THEN
-             IF fn_check_seat(seatnopar)=1
+             IF fn_check_seat(seat_no_par)=1
              THEN
                 UPDATE seat_details
-		SET seat_status='seattaken'
-		WHERE seat_no=seatnopar;
-		IF remainingitems<quantity 
+		SET seat_status='SEATTAKEN'
+		WHERE seat_no=seat_no_par;
+		IF remaining_items<quantity 
 		THEN 
 			SELECT 'Item got over' AS message;
 		ELSE 
-			CALL pr_to_update_remiaining(itemidpar,quantity);
-			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(orderidpar,itemidpar,seatnopar,food,quantity,ordertime,'OrderPlaced');
+			CALL pr_to_update_remiaining(item_id_par,quantity);
+			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(order_id_par,item_id_par,seat_no_par,food,quantity,order_time,'OrderPlaced');
                 SELECT 'Order Placed' AS statement;		
 		END IF;
 	ELSE 
@@ -34,7 +34,7 @@ SET itemidpar=(SELECT item_id FROM items_list WHERE items=food AND ession_id=ses
        ELSE
        UPDATE seat_details
                SET seat_status='available'
-               WHERE seat_no=seatnopar;	
+               WHERE seat_no=seat_no_par;	
        SELECT 'Your items limit exceeded' AS statement;
                END IF ;
        ELSE 

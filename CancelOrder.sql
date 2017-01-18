@@ -2,36 +2,36 @@
 
 DELIMITER $$
 
-CREATE PROCEDURE pr_cancelorder(seatnopar VARCHAR(20),item VARCHAR(20),cancelQuantity  INT)
+CREATE PROCEDURE pr_cancel_order(seat_no_par VARCHAR(20),item VARCHAR(20),cancel_quantity  INT)
 BEGIN
-DECLARE itemIdpar INT;
-DECLARE f_orderedTime VARCHAR(20);
-DECLARE quantityleft INT;
-DECLARE transquantity INT;
-DECLARE sid INT;
-DECLARE f_ordereditem VARCHAR(20);
+DECLARE item_id_par INT;
+DECLARE f_ordered_time VARCHAR(20);
+DECLARE quantity_left INT;
+DECLARE trans_quantity INT;
+DECLARE s_id INT;
+DECLARE f_ordered_item VARCHAR(20);
 
-SET f_ordereditem=(SELECT food_ordered FROM order_transaction WHERE seat_no=seatnopar AND food_ordered=item
+SET f_ordered_item=(SELECT food_ordered FROM order_transaction WHERE seat_no=seat_no_par AND food_ordered=item
 		ORDER BY order_time DESC LIMIT 0,1);
-SET f_orderedTime=(SELECT  order_time FROM order_transaction WHERE seat_no=seatnopar AND Food_ordered=f_ordereditem
+SET f_ordered_time=(SELECT  order_time FROM order_transaction WHERE seat_no=seat_no_par AND Food_ordered=f_ordered_item
 		ORDER BY order_time DESC LIMIT 0,1);
-SET transquantity=(SELECT quantity FROM order_transaction WHERE seat_no=seatnopar AND food_ordered=item ORDER BY order_time DESC LIMIT 0,1);
-SET itemIdpar = (SELECT item_id FROM items_list WHERE items=item);
-SET sid=(SELECT session_id FROM items_list WHERE item_id=itemIdpar);
+SET trans_quantity=(SELECT quantity FROM order_transaction WHERE seat_no=seat_no_par AND food_ordered=item ORDER BY order_time DESC LIMIT 0,1);
+SET item_id_par = (SELECT item_id FROM items_list WHERE items=item);
+SET s_id=(SELECT session_id FROM items_list WHERE item_id=item_id_par);
 		 
-SET quantityleft=(SELECT remaining FROM remaining_details WHERE item_id=itemIdpar );
-IF fn_check_seatno_for_cancel(seatnopar)=1
+SET quantity_left=(SELECT remaining FROM remaining_details WHERE item_id=item_id_par );
+IF fn_check_seatno_for_cancel(seat_no_par)=1
 THEN
-IF EXISTS (SELECT items FROM items_list WHERE item_id=itemidpar AND session_id=sid)
+IF EXISTS (SELECT items FROM items_list WHERE item_id=item_id_par AND session_id=s_id)
 THEN
-IF (SELECT quantity FROM order_transaction WHERE seat_no=seatnopar AND Food_ordered=f_ordereditem AND order_time=f_orderedTime)>=cancelquantity AND  cancelquantity!=0
+IF (SELECT quantity FROM order_transaction WHERE seat_no=seat_no_par AND Food_ordered=f_ordered_item AND order_time=f_ordered_Time)>=cancel_quantity AND  cancel_quantity!=0
 THEN
-IF(quantityleft<(SELECT quantity FROM sessions WHERE Session_id=sid))
+IF(quantity_left<(SELECT quantity FROM sessions WHERE Session_id=s_id))
 THEN
 UPDATE order_transaction
-SET quantity=quantity-cancelquantity,order_status='OrderCancelled'
-WHERE seat_no=seatnopar AND food_ordered=f_ordereditem AND order_time=f_orderedTime;
-CALL pr_to_update_remaining(itemidpar,cancelquantity);
+SET quantity=quantity-cancel_quantity,order_status='OrderCancelled'
+WHERE seat_no=seat_no_par AND food_ordered=f_ordered_item AND order_time=f_ordered_Time;
+CALL pr_to_update_remaining(item_id_par,cancel_quantity);
 SELECT 'Order cancelled' AS message;
 END IF;
 ELSE 
@@ -46,8 +46,8 @@ END IF;
 END $$
 DELIMITER ;
 
-DROP PROCEDURE pr_cancelorder
-CALL pr_cancelorder('109','idly',7) 
+DROP PROCEDURE pr_cancel_order
+CALL pr_cancel_order('109','idly',7) 
 
 
 

@@ -1,43 +1,43 @@
 DELIMITER $$
 CREATE
    
-    PROCEDURE pr_multimenu(seatno INT,IN orderlist MEDIUMTEXT,order_time TIME,IN quantitylist MEDIUMTEXT)
+    PROCEDURE pr_multi_menu(seat_no INT,IN order_list MEDIUMTEXT,order_time TIME,IN quantity_list MEDIUMTEXT)
     
     BEGIN
           DECLARE order_id_par INT;
-          DECLARE oneorder TEXT DEFAULT NULL ;
-          DECLARE length_oneorder INT DEFAULT NULL;
-          DECLARE trimmedorder TEXT DEFAULT NULL;
-          DECLARE onequantity TEXT DEFAULT NULL ;
-          DECLARE length_onequantity INT DEFAULT NULL;
-          DECLARE trimmedquantity TEXT DEFAULT NULL;
+          DECLARE one_order TEXT DEFAULT NULL ;
+          DECLARE length_one_order INT DEFAULT NULL;
+          DECLARE trimmed_order TEXT DEFAULT NULL;
+          DECLARE one_quantity TEXT DEFAULT NULL ;
+          DECLARE length_one_quantity INT DEFAULT NULL;
+          DECLARE trimmed_quantity TEXT DEFAULT NULL;
           SET order_id_par=(FLOOR(100+RAND()*(900)));
 
          iterator :
          LOOP    
-            IF LENGTH(TRIM(orderlist)) = 0 OR orderlist IS NULL OR LENGTH(TRIM(quantitylist)) = 0 OR quantitylist IS NULL THEN
+            IF LENGTH(TRIM(order_list)) = 0 OR order_list IS NULL OR LENGTH(TRIM(quantity_list)) = 0 OR quantity_list IS NULL THEN
               LEAVE iterator;
               END IF;
   
    
-                 SET oneorder = SUBSTRING_INDEX(orderlist,',',1);
-                 SET length_oneorder = LENGTH(oneorder);
-                 SET trimmedorder = TRIM(oneorder);
+                 SET one_order = SUBSTRING_INDEX(order_list,',',1);
+                 SET length_one_order = LENGTH(one_order);
+                 SET trimmed_order = TRIM(one_order);
                  
-                 SET onequantity = SUBSTRING_INDEX(quantitylist,',',1);
-                 SET length_onequantity = LENGTH(onequantity);
-                 SET trimmedquantity = TRIM(onequantity);
+                 SET one_quantity = SUBSTRING_INDEX(quantity_list,',',1);
+                 SET length_one_quantity = LENGTH(one_quantity);
+                 SET trimmed_quantity = TRIM(one_quantity);
                  
-                 CALL pr_order(order_id_par,seatno,oneorder,order_time,onequantity);
+                 CALL pr_order(order_id_par,seat_no,one_order,order_time,one_quantity);
                  
-                   SET orderlist = INSERT(orderlist,1,length_oneorder + 1,'');
-                   SET quantitylist = INSERT(quantitylist,1,length_onequantity + 1,'');
+                   SET order_list = INSERT(order_list,1,length_one_order + 1,'');
+                   SET quantity_list = INSERT(quantity_list,1,length_one_quantity + 1,'');
 
          END LOOP;       
     END$$
 DELIMITER ;
-DROP PROCEDURE pr_multimenu
-CALL pr_multimenu(109,'idly','09:00','10')
+DROP PROCEDURE pr_multi_menu
+CALL pr_multi_menu(109,'idly','09:00','10')
 
 
 
