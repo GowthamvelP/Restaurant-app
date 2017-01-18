@@ -47,7 +47,6 @@ DELIMITER ;
 
 
 
-DROP PROCEDURE  pr_order
 
 
 

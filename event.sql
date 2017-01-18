@@ -1,7 +1,7 @@
 DELIMITER $$
 
-CREATE EVENT ev_fromfirst
- ON SCHEDULE EVERY 24 hou
+CREATE EVENT ev_from_first
+ ON SCHEDULE EVERY 24 HOUR
  DO BEGIN
         UPDATE remaining_details
         SET remaining=(SELECT quantity FROM sessions WHERE session_id=1)
@@ -20,5 +20,4 @@ END$$
 
 DELIMITER ;
 
-DROP EVENT ev_FromFirst
 

@@ -33,21 +33,6 @@ DELIMITER ;
 
 
 
-DELIMITER $$
-
-CREATE  FUNCTION fn_check_seatno_for_cancel(seat_no_par VARCHAR(20)) RETURNS INT(11)
-BEGIN
-DECLARE flag INT;
-IF EXISTS(SELECT seat_no FROM order_transaction WHERE seat_no=seat_no_par)
-THEN
-SET flag=1;
-ELSE
-SET flag=0;
-END IF;
-RETURN flag;
-END$$
-
-DELIMITER ;
 
 
 
