@@ -11,15 +11,18 @@ DECLARE trans_quantity INT;
 DECLARE s_id INT;
 DECLARE f_ordered_item VARCHAR(20);
 DECLARE existing_seat_no INT;
+DECLARE c_order_time TIME;
+
 SET existing_seat_no=(SELECT seat_no FROM order_transaction WHERE seat_no=seat_no_par AND Food_ordered=item LIMIT 0,1);
 SET f_ordered_item=(SELECT food_ordered FROM order_transaction WHERE seat_no=seat_no_par AND food_ordered=item
 		ORDER BY order_time DESC LIMIT 0,1);
 SET f_ordered_time=(SELECT  order_time FROM order_transaction WHERE seat_no=seat_no_par AND Food_ordered=f_ordered_item
 		ORDER BY order_time DESC LIMIT 0,1);
 SET trans_quantity=(SELECT quantity FROM order_transaction WHERE seat_no=seat_no_par AND food_ordered=item ORDER BY order_time DESC LIMIT 0,1);
-SET item_id_par = (SELECT item_id FROM items_list WHERE items=item);
+SET item_id_par = (SELECT item_id FROM items_list WHERE items=item LIMIT 0,1);
 SET s_id=(SELECT session_id FROM items_list WHERE item_id=item_id_par);
 SET quantity_left=(SELECT remaining FROM remaining_details WHERE item_id=item_id_par );
+
 IF (existing_seat_no IS NOT NULL)
 THEN
 IF EXISTS (SELECT items FROM items_list WHERE item_id=item_id_par AND session_id=s_id)
@@ -46,7 +49,7 @@ END IF;
 END $$
 DELIMITER ;
 
-CALL pr_cancel_order('109','idly',7) 
+CALL pr_cancel_order('109','northindianthali',10) 
 
 
 

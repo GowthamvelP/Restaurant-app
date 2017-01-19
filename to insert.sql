@@ -36,7 +36,7 @@ CREATE
          END LOOP;       
     END$$
 DELIMITER ;
-CALL pr_multi_menu(109,'idly','09:05','10')
+CALL pr_multi_menu(109,'northindianthali',CURRENT_TIME,'10')
 
 
 
