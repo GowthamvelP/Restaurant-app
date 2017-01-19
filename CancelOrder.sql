@@ -55,7 +55,6 @@ CALL pr_cancel_order('109','northindianthali',10)
 
 
 
-DROP PROCEDURE pr_cancel_order
 
 
 
