@@ -1,7 +1,7 @@
 
 
 DELIMITER $$
-CREATE PROCEDURE pr_order(order_id_par INT,seat_no_par INT,food VARCHAR(20),order_time TIME,Quantity INT)
+CREATE PROCEDURE pr_order(order_id_par INT,seat_no_par INT,food VARCHAR(20),order_time TIME,quantity INT,OUT message VARCHAR(200))
 BEGIN 
  
 
@@ -22,23 +22,23 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
 		WHERE seat_no=seat_no_par;
 		IF remaining_items<quantity 
 		THEN 
-			SELECT 'Item got over' AS message;
+			SELECT 'Item got over' INTO message;
 		ELSE 
 			CALL pr_to_update_remiaining(item_id_par,quantity);
 			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(order_id_par,item_id_par,seat_no_par,food,quantity,order_time,'OrderPlaced');
-                SELECT 'Order Placed' AS statement;		
+                SELECT 'Order Placed' INTO message;		
 		END IF;
 	ELSE 
-		SELECT 'There is no such seatno' AS message;
+		SELECT 'There is no such seatno' INTO message;
 		END IF;
        ELSE
        UPDATE seat_details
                SET seat_status='available'
                WHERE seat_no=seat_no_par;	
-       SELECT 'Your items limit exceeded' AS statement;
+       SELECT 'Your items limit exceeded' INTO message;
                END IF ;
        ELSE 
-       SELECT 'Item is wrongly ordered' AS statement;
+       SELECT 'Item is wrongly ordered' INTO message;
        END IF;
 
 END $$

@@ -2,7 +2,7 @@
 
 DELIMITER $$
 
-CREATE PROCEDURE pr_cancel_order(seat_no_par VARCHAR(20),item VARCHAR(20),cancel_quantity  INT)
+CREATE PROCEDURE pr_cancel_order(seat_no_par VARCHAR(20),item VARCHAR(20),cancel_quantity  INT,OUT statement VARCHAR(200))
 BEGIN
 DECLARE item_id_par INT;
 DECLARE f_ordered_time VARCHAR(20);
@@ -35,21 +35,27 @@ UPDATE order_transaction
 SET quantity=quantity-cancel_quantity,order_status='OrderCancelled'
 WHERE seat_no=seat_no_par AND food_ordered=f_ordered_item AND order_time=f_ordered_Time;
 CALL pr_to_update_remaining(item_id_par,cancel_quantity);
-SELECT 'Order cancelled' AS message;
+SELECT 'Order cancelled' INTO statement;
 END IF;
 ELSE 
-SELECT 'Quantity mismatch' AS statement;
+SELECT 'Quantity mismatch' INTO statement;
 END IF;
 ELSE 
-SELECT 'Item doesnt exist' AS statement;
+SELECT 'Item doesnt exist' INTO statement;
 END IF;
 ELSE
-SELECT 'Invalid seat no' AS statement;
+SELECT 'Invalid seat no' INTO statement;
 END IF;
+
 END $$
 DELIMITER ;
 
-CALL pr_cancel_order('109','northindianthali',10) 
+
+
+
+
+SELECT @statement;
+CALL pr_cancel_order('109','northindianthali',100,@statement); 
 
 
 
