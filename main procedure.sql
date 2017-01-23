@@ -5,7 +5,6 @@ CREATE PROCEDURE pr_order(order_id_par INT,seat_no_par INT,food VARCHAR(20),orde
 BEGIN 
  
 
-DECLARE remaining_items INT; 
 DECLARE session_id_par INT;
 DECLARE seat_id INT;
 DECLARE item_id_par INT;
@@ -20,10 +19,9 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
                 UPDATE seat_details
 		SET seat_status='SEATTAKEN'
 		WHERE seat_no=seat_no_par;
-		SET remaining_items=(SELECT remaining FROM remaining_details WHERE item_id=item_id_par); 
-		IF remaining_items<quantity 
-		THEN 
-			SELECT 'Item got over' INTO message;
+		    IF fn_check_remaining(item_id_par,quantity)=1
+                    THEN			
+                      SELECT 'Item got over' INTO message;
 		ELSE 
 			CALL pr_to_update_remiaining(item_id_par,quantity);
 			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(order_id_par,item_id_par,seat_no_par,food,quantity,order_time,'OrderPlaced');
@@ -46,7 +44,6 @@ END $$
 DELIMITER ;
 
 
-DROP PROCEDURE pr_order
 
 
 

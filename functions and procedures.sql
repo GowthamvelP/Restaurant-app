@@ -14,7 +14,21 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
 
+CREATE  FUNCTION fn_check_remaining(item_id_fn_par VARCHAR(20),quantity_par INT) RETURNS INT(11)
+BEGIN
+DECLARE flag INT;
+IF (SELECT remaining FROM remaining_details WHERE item_id=item_id_fn_par)<quantity_par
+THEN
+SET flag=1;
+ELSE
+SET flag=0;
+END IF;
+RETURN flag;
+END$$
+
+DELIMITER ;
 
 DELIMITER $$
 
@@ -65,5 +79,6 @@ WHERE item_id=item_Id_par;
 END$$
 
 DELIMITER ;
+
 
 
