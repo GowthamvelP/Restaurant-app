@@ -24,6 +24,8 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
                       SELECT 'Item got over' INTO message;
 		ELSE 
 			CALL pr_to_update_remiaining(item_id_par,quantity);
+			SET order_id_par=(SELECT IFNULL(MAX(order_id),0)+1 FROM order_transaction);
+
 			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(order_id_par,item_id_par,seat_no_par,food,quantity,order_time,'OrderPlaced');
                 SELECT 'Order Placed' INTO message;		
 		END IF;
@@ -46,6 +48,6 @@ DELIMITER ;
 
 
 
-
+DROP PROCEDURE pr_order 
 
 
