@@ -20,6 +20,7 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
                 UPDATE seat_details
 		SET seat_status='SEATTAKEN'
 		WHERE seat_no=seat_no_par;
+		SET remaining_items=(SELECT remaining FROM remaining_details WHERE item_id=item_id_par); 
 		IF remaining_items<quantity 
 		THEN 
 			SELECT 'Item got over' INTO message;
@@ -33,7 +34,7 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
 		END IF;
        ELSE
        UPDATE seat_details
-               SET seat_status='available'
+               SET seat_status='available',seat_active=0
                WHERE seat_no=seat_no_par;	
        SELECT 'Your items limit exceeded' INTO message;
                END IF ;
@@ -45,10 +46,7 @@ END $$
 DELIMITER ;
 
 
-
-
-
-
+DROP PROCEDURE pr_order
 
 
 
