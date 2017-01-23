@@ -17,7 +17,7 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
              IF fn_check_seat(seat_no_par)=1
              THEN
                 UPDATE seat_details
-		SET seat_status='SEATTAKEN'
+		SET seat_status='SEAT_TAKEN'
 		WHERE seat_no=seat_no_par;
 		    IF fn_check_remaining(item_id_par,quantity)=1
                     THEN			
@@ -32,7 +32,7 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
 		END IF;
        ELSE
        UPDATE seat_details
-               SET seat_status='available',seat_active=0
+               SET seat_status='AVAILABLE',seat_active=0
                WHERE seat_no=seat_no_par;	
        SELECT 'Your items limit exceeded' INTO message;
                END IF ;
