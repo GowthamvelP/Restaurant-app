@@ -10,6 +10,7 @@ DECLARE seat_id INT;
 DECLARE item_id_par INT;
 SET session_id_par=(SELECT session_id FROM sessions WHERE order_time BETWEEN from_time AND to_time);
 SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=session_id_par);
+
     IF session_id_par=(SELECT session_id FROM items_list WHERE item_id=item_id_par)
     THEN
         IF fn_check_items_limit(order_id_par)=1
@@ -24,7 +25,6 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
                       SELECT 'Item got over' INTO message;
 		ELSE 
 			CALL pr_to_update_remiaining(item_id_par,quantity);
-			SET order_id_par=(SELECT IFNULL(MAX(order_id),0)+1 FROM order_transaction);
 
 			INSERT INTO order_transaction(order_id,item_id,seat_no,food_ordered,quantity,order_time,order_status) VALUES(order_id_par,item_id_par,seat_no_par,food,quantity,order_time,'OrderPlaced');
                 SELECT 'Order Placed' INTO message;		
@@ -44,7 +44,6 @@ SET item_id_par=(SELECT item_id FROM items_list WHERE items=food AND session_id=
 
 END $$
 DELIMITER ;
-
 
 
 

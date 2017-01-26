@@ -11,7 +11,8 @@ CREATE
           DECLARE one_quantity TEXT DEFAULT NULL ;
           DECLARE length_one_quantity INT DEFAULT NULL;
           DECLARE trimmed_quantity TEXT DEFAULT NULL;
-          SET order_id_par=(FLOOR(100+RAND()*(900)));
+          			SET order_id_par=(SELECT IFNULL(MAX(order_id),0)+1 FROM order_transaction);
+
       
          iterator :
          LOOP    
@@ -38,11 +39,10 @@ CREATE
      
     END$$
 DELIMITER ;
-CALL pr_multi_menu(109,'northindianthali','03:00:00','10',@message)
+CALL pr_multi_menu(106,'idly,vada,dosa','09:06:00','1,1,1',@message);
 
 SELECT @message;
 SELECT * FROM order_transaction;
-
 
 
 
