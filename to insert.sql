@@ -1,7 +1,7 @@
 DELIMITER $$
 CREATE
    
-    PROCEDURE pr_multi_menu(seat_no INT,IN order_list MEDIUMTEXT,order_time TIME,IN quantity_list MEDIUMTEXT,OUT message_status VARCHAR(200))
+    PROCEDURE pr_multi_menu(seat_no INT,IN order_list VARCHAR(100),order_time TIME,IN quantity_list VARCHAR(50),OUT message_status VARCHAR(200))
     
     BEGIN
           DECLARE order_id_par INT;
@@ -13,7 +13,7 @@ CREATE
           DECLARE trimmed_quantity TEXT DEFAULT NULL;
           			SET order_id_par=(SELECT IFNULL(MAX(order_id),0)+1 FROM order_transaction);
 
-      
+      SET message_status='';
          iterator :
          LOOP    
             IF LENGTH(TRIM(order_list)) = 0 OR order_list IS NULL OR LENGTH(TRIM(quantity_list)) = 0 OR quantity_list IS NULL THEN
@@ -30,19 +30,19 @@ CREATE
                  SET trimmed_quantity = TRIM(one_quantity);
                  
                  CALL pr_order(order_id_par,seat_no,one_order,order_time,one_quantity,@message);
-                 
+                       SET message_status=CONCAT(message_status,'  ',@message); 
+			SELECT message_status;
                    SET order_list = INSERT(order_list,1,length_one_order + 1,'');
                    SET quantity_list = INSERT(quantity_list,1,length_one_quantity + 1,'');
 
          END LOOP; 
-          SET message_status=@message; 
+         
+    
      
     END$$
 DELIMITER ;
-CALL pr_multi_menu(106,'idly,vada,dosa','09:06:00','1,1,1',@message);
+CALL pr_multi_menu(101,'idly','09:00','2,2,2,2,2,2',@message);
 
-SELECT @message;
+
 SELECT * FROM order_transaction;
-
-
 
